@@ -11,4 +11,8 @@ public class Room{
         this.y = y;
         this.z = z;
     }
+
+    public int[] getRoomNumber(){
+        return roomNumber;
+    }
 }
