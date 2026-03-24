@@ -6,7 +6,8 @@ import java.util.Locale;
 public class Player{
     // Aktuelle Positivion im Cube
     private int x, y, z;
-    private Cube myCube;        // In welchem Cube ist der Spieler
+    private Cube myCube; // In welchem Cube ist der Spieler
+    private int shoes = 2;
 
     public Player( int posX, int posY, int posZ, Cube cube ){
         this.x = posX;
@@ -15,41 +16,58 @@ public class Player{
         this.myCube = cube;
     }
 
-    public boolean walk( String direction ){
+    public boolean walk(String direction) {
         int newX = x, newY = y, newZ = z;
 
-        switch( direction.toLowerCase() ){
+        switch (direction.toLowerCase().trim()) {
             case "north", "norden": newY++; break;
             case "south", "süden":  newY--; break;
             case "east", "osten":   newX++; break;
-            case "west","westen":   newX--; break;
+            case "west", "westen":  newX--; break;
             case "up", "hoch":      newZ++; break;
             case "down", "runter":  newZ--; break;
-
             default:
                 System.out.println("Unknown direction!");
+                return true;
         }
 
-        // Anfrage an den Cube, ob man in diese Richtung gehen kann
-        if( myCube.isPositionValid( newX, newY, newZ ) ){
+        if (myCube.isPositionValid(newX, newY, newZ)) {
             this.x = newX;
             this.y = newY;
             this.z = newZ;
 
             System.out.println("You move to " + direction + ".");
+            Room currentRoom = myCube.getRoom(this.x, this.y, this.z);
 
-            Room currentRoom = myCube.getRoom( this.x, this.y, this.z );
-
-            if( currentRoom.isTrap() ){
-                return false; // Spieler ist gestorben
+            if (currentRoom.isTrap()) {
+                return false; // Spieler ist in eine Falle getappt
             } else {
-                System.out.println("The room is silent. You are safe...for now.");
-                return true; // Spieler lebt
+                System.out.println("The room is silent. You are safe.");
+                return true; // Überlebt
             }
+        } else {
+            Room currentRoom = myCube.getRoom(this.x, this.y, this.z);
 
-        } else{
-            System.out.println("Weird, there's no passage here.");
-            return true;
+            if (currentRoom.isExitRiddleSolved()) {
+                System.out.println("\n*******************************************");
+                System.out.println("The numbers " + currentRoom.getRoomNumber()[0] + "|" +
+                        currentRoom.getRoomNumber()[1] + "|" +
+                        currentRoom.getRoomNumber()[2] + " glow in a soft blue.");
+                System.out.println("The sum " + (currentRoom.getRoomNumber()[0] +
+                        currentRoom.getRoomNumber()[1] +
+                        currentRoom.getRoomNumber()[2]) + " is a prime!");
+                System.out.println("YOU HAVE ESCAPED THE CUBE!");
+                System.out.println("*********************************************");
+                System.exit(0); // Sieg!
+                return true;
+            } else {
+                // Das Rätsel wurde nicht gelöst -> Die Luke ist eine Falle!
+                System.out.println("\n###########################################");
+                System.out.println("You try to open the outer hatch, but it's a TRAP!");
+                System.out.println("Flamethrowers incinerate the room.");
+                System.out.println("###########################################");
+                return false; // Triggert den Respawn in der Main
+            }
         }
     }
 
@@ -106,5 +124,47 @@ public class Player{
         System.out.println("You open your eyes... everything is familiar.");
         System.out.println("You are back in the center of the Cube.");
         System.out.println("*******************************************");
+    }
+
+    public void throwShoe(String direction){
+        if( shoes <= 0 ){
+            System.out.println( "You don't have any shoes left! You are barefoot and scared." );
+            return;
+        }
+
+        int[] target = calculateTarget( direction );
+        int targetX = target[0];
+        int targetY = target[1];
+        int targetZ = target[2];
+
+        if( myCube.isPositionValid( targetX, targetY, targetZ ) ){
+            shoes--;
+            Room targetRoom = myCube.getRoom( targetX, targetY, targetZ );
+
+            if( targetRoom.isTrap() ){
+                System.out.println("KLONK! The shoe triggered a trap and is GONE!");
+            } else {
+                System.out.println("Thud. The room seems safe.");
+            }
+        } else {
+            System.out.println("You hit the wall. The shoe bounces back to you.");
+        }
+    }
+
+    private int[] calculateTarget(String direction) {
+        int targetX = this.x;
+        int targetY = this.y;
+        int targetZ = this.z;
+
+        switch (direction.toLowerCase().trim()) {
+            case "north", "norden": targetY++; break;
+            case "south", "süden":  targetY--; break;
+            case "east", "osten":   targetX++; break;
+            case "west", "westen":  targetX--; break;
+            case "up", "hoch":      targetZ++; break;
+            case "down", "runter":  targetZ--; break;
+        }
+
+        return new int[]{targetX, targetY, targetZ};
     }
 }

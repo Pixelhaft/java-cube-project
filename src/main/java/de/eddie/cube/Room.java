@@ -32,4 +32,12 @@ public class Room{
         }
         return false;
     }
+
+    public boolean isExitRiddleSolved() {
+        // Die Summe der drei Zahlen ausrechnen
+        int sum = roomNumber[0] + roomNumber[1] + roomNumber[2];
+
+        // Die Summe muss eine Primzahl sein
+        return isPrime(sum);
+    }
 }
