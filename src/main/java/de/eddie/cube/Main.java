@@ -30,8 +30,11 @@ public class Main{
             String[] parts = command.split(" ", 2);
 
             if( parts[0].equals( "look" ) && parts.length == 2 ){
-                // Spieler will nur schauen, nicht laufen
-                one.inspect( parts[1] );
+                // Nur die Richtung "checken"
+                one.inspect( parts[ 1 ] );
+            } else if( parts[0].equals( "throw" ) && parts.length == 2 ){
+                // Item werfen
+                one.throwShoe( parts[1] );
             } else if( parts.length == 1 && !parts[0].isEmpty()){
                 // Überprüfen das Ergebnis von walk: true = überleben / false = tot
                 boolean amIAlive = one.walk( parts[0] );

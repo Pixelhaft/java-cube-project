@@ -17,16 +17,12 @@ public class Player{
     }
 
     public boolean walk(String direction) {
-        int newX = x, newY = y, newZ = z;
+        int[] target = calculateTarget( direction );
+        int newX = target[0];
+        int newY = target[1];
+        int newZ = target[2];
 
-        switch (direction.toLowerCase().trim()) {
-            case "north", "norden": newY++; break;
-            case "south", "süden":  newY--; break;
-            case "east", "osten":   newX++; break;
-            case "west", "westen":  newX--; break;
-            case "up", "hoch":      newZ++; break;
-            case "down", "runter":  newZ--; break;
-            default:
+        if ( newX == x && newY == y && newZ == z ){
                 System.out.println("Unknown direction!");
                 return true;
         }
@@ -76,19 +72,19 @@ public class Player{
     }
 
     public void inspect( String direction ){
-        int checkX = x, checkY = y, checkZ = z;
+        int[] target = calculateTarget( direction );
+        int checkX = target[0];
+        int checkY = target[1];
+        int checkZ = target[2];
 
-        switch( direction.toLowerCase() ){
-            case "north", "norden": checkY++; break;
-            case "south", "süden":  checkY--; break;
-            case "east", "osten":   checkX++; break;
-            case "west","westen":   checkX--; break;
-            case "up", "hoch":      checkZ++; break;
-            case "down", "runter":  checkZ--; break;
+        if( myCube.isPositionValid( checkX, checkY, checkZ )){
+            Room nextRoom = myCube.getRoom( checkX, checkY, checkZ );
+            int[] nums = nextRoom.getRoomNumber();
 
-            default:
-                System.out.println("Unknown direction to look at!");
-                return;
+            System.out.println("You peek through the hatch to the " + direction + ".");
+            System.out.println("The numbers engraved on the frame are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
+        } else {
+            System.out.println("You look to the " + direction + ", but there is only a solid wall.");
         }
 
         // Prüfen, ob in der Richtung ein Raum ist
@@ -119,11 +115,12 @@ public class Player{
         this.x = 2;
         this.y = 2;
         this.z = 2;
+        this.shoes = 2;
 
         System.out.println("\n*******************************************");
         System.out.println("You open your eyes... everything is familiar.");
         System.out.println("You are back in the center of the Cube.");
-        System.out.println("*******************************************");
+        System.out.println("*********************************************");
     }
 
     public void throwShoe(String direction){
