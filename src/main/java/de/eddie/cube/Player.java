@@ -45,7 +45,7 @@ public class Player{
             Room currentRoom = myCube.getRoom(this.x, this.y, this.z);
 
             if (currentRoom.isExitRiddleSolved()) {
-                System.out.println("\n*******************************************");
+                System.out.println("\n*********************************************");
                 System.out.println("The numbers " + currentRoom.getRoomNumber()[0] + "|" +
                         currentRoom.getRoomNumber()[1] + "|" +
                         currentRoom.getRoomNumber()[2] + " glow in a soft blue.");
@@ -57,11 +57,11 @@ public class Player{
                 System.exit(0); // Sieg!
                 return true;
             } else {
-                // Das Rätsel wurde nicht gelöst -> Die Luke ist eine Falle!
-                System.out.println("\n###########################################");
+                // Dieser Ausgang ist eine Falle
+                System.out.println("\n#################################################");
                 System.out.println("You try to open the outer hatch, but it's a TRAP!");
-                System.out.println("Flamethrowers incinerate the room.");
-                System.out.println("###########################################");
+                System.out.println("      Flamethrowers incinerate the room.");
+                System.out.println("#################################################");
                 return false; // Triggert den Respawn in der Main
             }
         }
@@ -77,17 +77,7 @@ public class Player{
         int checkY = target[1];
         int checkZ = target[2];
 
-        if( myCube.isPositionValid( checkX, checkY, checkZ )){
-            Room nextRoom = myCube.getRoom( checkX, checkY, checkZ );
-            int[] nums = nextRoom.getRoomNumber();
-
-            System.out.println("You peek through the hatch to the " + direction + ".");
-            System.out.println("The numbers engraved on the frame are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
-        } else {
-            System.out.println("You look to the " + direction + ", but there is only a solid wall.");
-        }
-
-        // Prüfen, ob in der Richtung ein Raum ist
+        // Prüfen, ob in der ausgewählten Richtung ein Raum ist
         if( myCube.isPositionValid( checkX, checkY, checkZ )){
             Room nextRoom = myCube.getRoom( checkX, checkY, checkZ );
             int[] nums = nextRoom.getRoomNumber();
@@ -117,10 +107,10 @@ public class Player{
         this.z = 2;
         this.shoes = 2;
 
-        System.out.println("\n*******************************************");
+        System.out.println("\n*****************************************************");
         System.out.println("You open your eyes... everything is familiar.");
-        System.out.println("You are back in the center of the Cube.");
-        System.out.println("*********************************************");
+        System.out.println("Your vision returns, and you're back in the first room.");
+        System.out.println("*******************************************************");
     }
 
     public void throwShoe(String direction){

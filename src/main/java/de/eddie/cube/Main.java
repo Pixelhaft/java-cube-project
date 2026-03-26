@@ -12,7 +12,7 @@ public class Main{
         Scanner tastatur = new Scanner( System.in );
         String command = "";
 
-        System.out.println("You wake up in a cube... in every direction there is a door!");
+        System.out.println("\nYou wake up in a cube... in every direction there is a door!");
         System.out.println("Commands (e.g. 'north', 'look north', or 'exit')");
 
         while( true ){
@@ -40,23 +40,35 @@ public class Main{
                 boolean amIAlive = one.walk( parts[0] );
 
                 if( !amIAlive ){
-                    System.out.println("\n###########################################");
-                    System.out.println("The Cube shifts and changes... A new nightmare begins.");
-                    System.out.println("###########################################");
+                    // Benachrichtigung beim Sterben
+                    System.out.println("\n############################################################################");
+                    System.out.println("You step into the room... the doors slam shut behind you... damn it, a trap!");
+                    System.out.println("                          GAME OVER");
+                    System.out.println("############################################################################");
 
-                    // Neuer Cube wird erschaffen (neue Zufallszahlen)
-                    theCube = new Cube();
+                    // Anfrage an den Spieler, ob ich weiter spielen will
+                    System.out.println("\n Retry? (y/n): ");
+                    String choose = tastatur.nextLine().toLowerCase().trim();
 
-                    // Dem Spieler den neuen Cube zuweisen
-                    one.setMyCube( theCube );
+                    if( choose.equals( "y" ) || choose.equals( "j" )){
+                        System.out.println("\n######################################################");
+                        System.out.println("The Cube shifts and changes... A new nightmare begins.");
+                        System.out.println("######################################################");
 
-                    // Spieler wird zurück an den Start gesetzt
-                    one.respawn();
+                        // Neuer Cube wird erstellt (neue Zufallszahlen)
+                        theCube = new Cube();
+                        // Dem Spieler den neuen Cube zuweisen
+                        one.setMyCube( theCube );
+                        // Spieler wird zurück an den Start gesetzt
+                        one.respawn();
+                    } else if( choose.equals( "n" ) ){
+                        System.out.println( "PROGRAM TERMINATED" );
+                        tastatur.close();
+                    }
                 }
             }
         }
 
-        System.out.println( "Your vision fades to black... 'Program terminated'" );
-        tastatur.close();
+
     }
 }

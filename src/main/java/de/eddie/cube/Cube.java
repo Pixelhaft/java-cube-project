@@ -30,7 +30,7 @@ public class Cube{
             }
         }
 
-        System.out.println("Cube mit 125 Räumen wurde erstellt.");
+        System.out.println("\nA 125‑room cube has been created.");
     }
 
     public Room getRoom(int x, int y, int z){
