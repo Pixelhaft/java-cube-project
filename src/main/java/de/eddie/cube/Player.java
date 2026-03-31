@@ -8,6 +8,8 @@ public class Player{
     private int x, y, z;
     private Cube myCube; // In welchem Cube ist der Spieler
     private int shoes = 2;
+    private int roomsSurvived = 0;
+    private static int highscore = 0;
 
     public Player( int posX, int posY, int posZ, Cube cube ){
         this.x = posX;
@@ -38,6 +40,9 @@ public class Player{
             if (currentRoom.isTrap()) {
                 return false; // Spieler ist in eine Falle getappt
             } else {
+                roomsSurvived++;
+                if( roomsSurvived > highscore )
+                    highscore = roomsSurvived;
                 System.out.println("The room is silent. You are safe.");
                 return true; // Überlebt
             }
@@ -82,10 +87,23 @@ public class Player{
             Room nextRoom = myCube.getRoom( checkX, checkY, checkZ );
             int[] nums = nextRoom.getRoomNumber();
 
+            if( nextRoom.isTrap() ){
+                System.out.println("[DEBUG: This room is a Trap!]");
+            }
+
             System.out.println("You peek through the hatch to the " + direction + ".");
             System.out.println("The numbers engraved on the frame are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
         } else {
-            System.out.println("You look to the " + direction + ", but there is only a solid wall");
+            System.out.println("You look to the " + direction + ". There is no next room.");
+            System.out.println("You see a heavy industrial airlock leading to the OUTSIDE.");
+
+            Room current = myCube.getRoom(this.x, this.y, this.z);
+            int[] nums = current.getRoomNumber();
+            System.out.println("The numbers on your current hatch are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
+
+            if( current.isExitRiddleSolved() ){
+                System.out.println("[DEBUG: THIS IS A POSSIBLE EXIT!]");
+            }
         }
     }
 
@@ -101,11 +119,16 @@ public class Player{
         return z;
     }
 
+    public int getRoomsSurvived(){
+        return roomsSurvived;
+    }
+
     public void respawn(){
         this.x = 2;
         this.y = 2;
         this.z = 2;
         this.shoes = 2;
+        this.roomsSurvived = 0;
 
         System.out.println("\n*****************************************************");
         System.out.println("You open your eyes... everything is familiar.");

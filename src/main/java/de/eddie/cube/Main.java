@@ -43,7 +43,8 @@ public class Main{
                     // Benachrichtigung beim Sterben
                     System.out.println("\n############################################################################");
                     System.out.println("You step into the room... the doors slam shut behind you... damn it, a trap!");
-                    System.out.println("                          GAME OVER");
+                    System.out.println("                          GAME OVER - You survived "
+                                                      + one.getRoomsSurvived() + " rooms.");
                     System.out.println("############################################################################");
 
                     // Anfrage an den Spieler, ob ich weiter spielen will
@@ -63,12 +64,10 @@ public class Main{
                         one.respawn();
                     } else if( choose.equals( "n" ) ){
                         System.out.println( "PROGRAM TERMINATED" );
-                        tastatur.close();
+                        return;
                     }
                 }
             }
         }
-
-
     }
 }
