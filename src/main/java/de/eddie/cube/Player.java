@@ -87,9 +87,9 @@ public class Player{
             Room nextRoom = myCube.getRoom( checkX, checkY, checkZ );
             int[] nums = nextRoom.getRoomNumber();
 
-            if( nextRoom.isTrap() ){
+            /*if( nextRoom.isTrap() ){
                 System.out.println("[DEBUG: This room is a Trap!]");
-            }
+            }*/
 
             System.out.println("You peek through the hatch to the " + direction + ".");
             System.out.println("The numbers engraved on the frame are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
@@ -101,9 +101,9 @@ public class Player{
             int[] nums = current.getRoomNumber();
             System.out.println("The numbers on your current hatch are: " + nums[0] + "|" + nums[1] + "|" + nums[2]);
 
-            if( current.isExitRiddleSolved() ){
+            /*if( current.isExitRiddleSolved() ){
                 System.out.println("[DEBUG: THIS IS A POSSIBLE EXIT!]");
-            }
+            }*/
         }
     }
 
